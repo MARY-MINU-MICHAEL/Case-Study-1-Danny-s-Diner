@@ -1,78 +1,106 @@
-# Case Study 1: Danny's Diner
+### 8. Purchases before joining
 
-My analysis of the first case study in Danny Ma's 8 Week SQL Challenge.
+**Approach:**
 
-> This is an independent learning project. The original case study and dataset are available on the [official case study page](https://8weeksqlchallenge.com/case-study-1/).
+<!-- Explain your approach and any assumptions here. -->
 
-## Contents
+**SQL:**
 
-- [Business task](#business-task)
-- [Dataset and relationships](#dataset-and-relationships)
-- [Questions and solutions](#questions-and-solutions)
-- [Key findings](#key-findings)
-- [What I learned](#what-i-learned)
-- [Credits](#credits)
+<!-- Add your answer in solutions.sql and link to its section here if useful. -->
 
-## Business task
+**Result:**
 
-In my own words, what does the business want to understand from its customer, sales, menu, and membership data?
+<!-- Add a small result table or summary here. -->
 
-## Dataset and relationships
+**Interpretation:**
 
-Add an ER diagram showing how the `sales`, `menu`, and `members` tables connect.
-
-| Table | What a row represents | Key columns |
-|---|---|---|
-| `sales` | A product purchased by a customer on a date | `customer_id`, `order_date`, `product_id` |
-| `menu` | A menu item and its price | `product_id`, `product_name`, `price` |
-| `members` | A customer's membership start date | `customer_id`, `join_date` |
-
-## Questions and solutions
-
-Use the [official case study page](https://8weeksqlchallenge.com/case-study-1/) for the questions and data. For each question, document your own approach and results.
-
-### Question 1 — [Add a short question title]
-
-**Approach:** Which tables, calculations, and assumptions did I use?
-
-**SQL:** See the question's section in [`solutions.sql`](solutions.sql).
-
-**Result:** Add a small result table or summarize the output.
-
-**What it tells me:** Explain the business meaning of the result.
+<!-- Explain what the result means for the business. -->
 
 ---
 
-### Question 2 — [Add a short question title]
+### 9. Customer points
 
-**Approach:** Describe the logic and assumptions.
+**Approach:**
 
-**SQL:** See the question's section in [`solutions.sql`](solutions.sql).
+<!-- Explain your approach and how you apply the points rules. -->
 
-**Result:** Add the output or a concise summary.
+**SQL:**
 
-**What it tells me:** Explain what the result means.
+<!-- Add your answer in solutions.sql and link to its section here if useful. -->
+
+**Result:**
+
+<!-- Add a small result table or summary here. -->
+
+**Interpretation:**
+
+<!-- Explain what the result means for the business. -->
 
 ---
 
-Repeat this format for the remaining questions and any bonus questions you attempt.
+### 10. Points earned by the end of January
 
-## Key findings
+**Approach:**
 
-1. **Finding:** Add a result and what it means.
-2. **Finding:** Add a result and what it means.
-3. **Finding:** Add a result and what it means.
+<!-- Explain the date window and points rules you applied. -->
 
-## What I learned
+**SQL:**
 
-- **SQL concepts practiced:** Add the concepts you used.
-- **Most challenging part:** Describe what took the most effort.
-- **Next time:** Note what you would improve.
+<!-- Add your answer in solutions.sql and link to its section here if useful. -->
+
+**Result:**
+
+<!-- Add a small result table or summary here. -->
+
+**Interpretation:**
+
+<!-- Explain what the result means for the business. -->
+
+## Bonus Questions
+
+### Join All The Things
+
+**Approach:**
+
+<!-- Explain your approach here. -->
+
+**SQL:**
+
+<!-- Add your answer in solutions.sql. -->
+
+**Result:**
+
+<!-- Add the output table here. -->
+
+### Rank All The Things
+
+**Approach:**
+
+<!-- Explain how you assign ranks and handle non-member purchases. -->
+
+**SQL:**
+
+<!-- Add your answer in solutions.sql. -->
+
+**Result:**
+
+<!-- Add the output table here. -->
+
+## Key Findings
+
+1. <!-- Add a business finding. -->
+2. <!-- Add a business finding. -->
+3. <!-- Add a business finding. -->
+
+## What I Learned
+
+- **SQL concepts practiced:** <!-- Add the SQL concepts you used. -->
+- **Most challenging part:** <!-- Describe what you found difficult. -->
+- **What I would improve:** <!-- Note what you would change next time. -->
 
 ## Credits
 
 - Case study and dataset: [Danny Ma's 8 Week SQL Challenge](https://8weeksqlchallenge.com/case-study-1/)
-- Challenge information: [Getting Started](https://8weeksqlchallenge.com/getting-started/)
-- SQL dialect used: [e.g., PostgreSQL]
+- SQL dialect: MySQL
 
-The case study content and dataset belong to their original publisher. This repository contains my own SQL, analysis, and learning notes.
+The case study content and dataset belong to their original publisher. This repository contains my own SQL solutions, analysis, and learning notes. Please refer to the official page for the full questions and source data.
