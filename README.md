@@ -50,8 +50,6 @@ The questions and sample data are on the [official Danny's Diner case study page
 
 **Question:** What is the total amount each customer spent at the restaurant?
 
-**Approach:**
-
 ```sql
 SELECT 
     sales.customer_id AS Customers,
@@ -63,15 +61,23 @@ GROUP BY sales.customer_id
 ORDER BY sales.customer_id ASC;
 ```
 
-**SQL:**
-
+**Steps:**
+- Use inner join to merge the dannys_diner.sales and dannys_diner.menu tables as sales.customer_id and menu.price are from both tables.
+- Use SUM to calculate the total sales contributed by each customer.
+- Group the aggregated results by sales.customer_id using GROUP BY.
 <!-- Add your answer in solutions.sql and link to its section here if useful. -->
 
-**Result:**
+**Answer:**
 
-<!-- Add a small result table or summary here. -->
+| Customers | Totals_Sales |
+|---|---:|
+| A | 76 |
+| B | 74 |
+| C | 36 |
 
-**Interpretation:**
+-Customer A spent $76.
+-Customer B spent $74.
+-Customer C spent $36.
 
 <!-- Explain what the result means for the business. -->
 
