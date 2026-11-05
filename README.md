@@ -87,19 +87,24 @@ ORDER BY sales.customer_id ASC;
 
 **Question:** How many days has each customer visited the restaurant?
 
-**Approach:**
 
-<!-- Explain your approach and any assumptions here. -->
-
-**SQL:**
-
-<!-- Add your answer in solutions.sql and link to its section here if useful. -->
-
-**Result:**
-
-<!-- Add a small result table or summary here. -->
-
-**Interpretation:**
+```sql
+SELECT customer_id,COUNT(DISTINCT Order_date) AS distinct_order_dates 
+FROM dannys_diner.sales
+GROUP BY customer_id;
+```
+**Steps:**
+- To determine the unique number of visits for each customer, utilize COUNT(DISTINCT order_date).
+- It's important to apply the DISTINCT keyword while calculating the visit count to avoid duplicate counting of days. For instance, if Customer A visited the restaurant twice on '2021–01–07', counting without DISTINCT would result in 2 days instead of the accurate count of 1 day. 
+**Answer:**
+|Customers|Visit_Count|
+|---|---:|
+|A	|4|
+|B	|6|
+|C	|2|
+- Customer A visited 4 times.
+- Customer B visited 6 times.
+- Customer C visited 2 times.
 
 <!-- Explain what the result means for the business. -->
 
