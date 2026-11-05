@@ -52,7 +52,16 @@ The questions and sample data are on the [official Danny's Diner case study page
 
 **Approach:**
 
-<!-- Explain your approach and any assumptions here. -->
+```sql
+SELECT 
+    sales.customer_id AS Customers,
+    SUM(menu.price) AS Totals_Sales
+FROM dannys_diner.sales
+INNER JOIN dannys_diner.menu
+    ON sales.product_id = menu.product_id
+GROUP BY sales.customer_id
+ORDER BY sales.customer_id ASC;
+```
 
 **SQL:**
 
