@@ -97,11 +97,11 @@ GROUP BY customer_id;
 - To determine the unique number of visits for each customer, utilize COUNT(DISTINCT order_date).
 - It's important to apply the DISTINCT keyword while calculating the visit count to avoid duplicate counting of days. For instance, if Customer A visited the restaurant twice on '2021–01–07', counting without DISTINCT would result in 2 days instead of the accurate count of 1 day. 
 **Answer:**
-|Customers|Visit_Count|
+| Customers | Visit_Count |
 |---|---:|
-|A	|4|
-|B	|6|
-|C	|2|
+| A	| 4 |
+| B	| 6 |
+| C	| 2 |
 - Customer A visited 4 times.
 - Customer B visited 6 times.
 - Customer C visited 2 times.
