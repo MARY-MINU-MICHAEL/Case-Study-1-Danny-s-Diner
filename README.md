@@ -75,9 +75,9 @@ ORDER BY sales.customer_id ASC;
 | B | 74 |
 | C | 36 |
 
--Customer A spent $76.
--Customer B spent $74.
--Customer C spent $36.
+- Customer A spent $76.
+- Customer B spent $74.
+- Customer C spent $36.
 
 <!-- Explain what the result means for the business. -->
 
