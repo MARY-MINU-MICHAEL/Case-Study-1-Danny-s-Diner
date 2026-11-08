@@ -159,23 +159,31 @@ ORDER BY customer_id, product_name;
 
 ### 4. Most purchased menu item
 
-**Approach:**
+*Question:** What is the most purchased item on the menu and how many times was it purchased by all customers?
 
-<!-- Explain your approach and any assumptions here. -->
+```sql
+WITH product_count AS (
+    SELECT
+        COUNT(*) AS purchase_count,
+        m.product_name
+    FROM dannys_diner.sales AS s
+    INNER JOIN dannys_diner.menu AS m
+        ON s.product_id = m.product_id
+    GROUP BY m.product_name
+)
+SELECT
+    product_name,
+    purchase_count
+FROM product_count
+ORDER BY purchase_count DESC
+LIMIT 1;
+```
 
-**SQL:**
-
-<!-- Add your answer in solutions.sql and link to its section here if useful. -->
-
-**Result:**
-
-<!-- Add a small result table or summary here. -->
-
-**Interpretation:**
-
-<!-- Explain what the result means for the business. -->
-
----
+**Steps:**
+- Joined sales and menu using product_id to match each purchase to a product name.
+- Counted the purchases for each product using COUNT(*) and grouped by product name.
+- Sorted the products by purchase count in descending order.
+- Used LIMIT 1 to return the most-purchased product.
 
 ### 5. Most popular item for each customer
 
