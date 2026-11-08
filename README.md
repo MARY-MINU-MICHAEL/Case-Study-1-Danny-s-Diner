@@ -114,23 +114,48 @@ GROUP BY customer_id;
 
 ### 3. First menu item purchased by each customer
 
-**Approach:**
+**Question:** What was the first item from the menu purchased by each customer?
 
-<!-- Explain your approach and any assumptions here. -->
+```sql
+WITH ranked_purchases AS (
+SELECT
+s.customer_id,
+m.product_name,
+s.order_date,
+DENSE_RANK() OVER (
+PARTITION BY s.customer_id
+ORDER BY s.order_date
+) AS purchase_rank
+FROM dannys_diner.sales AS s
+INNER JOIN dannys_diner.menu AS m
+ON s.product_id = m.product_id
+)
+SELECT DISTINCT
+customer_id,
+product_name
+FROM ranked_purchases
+WHERE purchase_rank = 1
+ORDER BY customer_id, product_name;
+```
+**Steps:**
+- Joined sales and menu using product_id to get each product’s name.
+- Used DENSE_RANK() to rank each customer’s purchases by date, starting with their earliest date.
+- Filtered for rank 1 to keep purchases from each customer’s earliest date.
+- Used DISTINCT to remove repeated customer–product pairs.
+- Sorted the results by customer and product name.
+  
+**Answer:**
+  
+| customer_id | product_name |
+|---|---|
+| A | curry |
+| A | sushi |
+| B | curry |
+| C | ramen |
 
-**SQL:**
-
-<!-- Add your answer in solutions.sql and link to its section here if useful. -->
-
-**Result:**
-
-<!-- Add a small result table or summary here. -->
-
-**Interpretation:**
-
-<!-- Explain what the result means for the business. -->
-
----
+- Customer A placed an order for both curry and sushi simultaneously, making them the first items in the order.
+- Customer B's first order is curry.
+- Customer C's first order is ramen.
 
 ### 4. Most purchased menu item
 
