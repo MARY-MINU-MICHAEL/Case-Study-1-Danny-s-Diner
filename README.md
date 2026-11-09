@@ -185,6 +185,13 @@ LIMIT 1;
 - Sorted the products by purchase count in descending order.
 - Used LIMIT 1 to return the most-purchased product.
 
+  **Answer:**
+  | product_name | purchase_count |
+|---|---:|
+| ramen | 8 |
+
+- Ramen is the most purchased item with a count of 8
+
 ### 5. Most popular item for each customer
 
 **Approach:**
