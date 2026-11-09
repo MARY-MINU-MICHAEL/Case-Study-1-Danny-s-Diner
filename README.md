@@ -186,7 +186,8 @@ LIMIT 1;
 - Used LIMIT 1 to return the most-purchased product.
 
   **Answer:**
-  | product_name | purchase_count |
+
+| product_name | purchase_count |
 |---|---:|
 | ramen | 8 |
 
