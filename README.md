@@ -185,7 +185,7 @@ LIMIT 1;
 - Sorted the products by purchase count in descending order.
 - Used LIMIT 1 to return the most-purchased product.
 
-  **Answer:**
+**Answer:**
 
 | product_name | purchase_count |
 |---|---:|
