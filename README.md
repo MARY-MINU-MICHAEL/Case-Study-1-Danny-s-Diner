@@ -195,22 +195,59 @@ LIMIT 1;
 
 ### 5. Most popular item for each customer
 
-**Approach:**
+**Question:** Which item was the most popular for each customer?
 
-<!-- Explain your approach and how you handle ties. -->
+```sql
+WITH item_counts AS (
+    SELECT
+        s.customer_id,
+        m.product_name,
+        COUNT(*) AS purchase_count
+    FROM dannys_diner.sales AS s
+    INNER JOIN dannys_diner.menu AS m
+        ON s.product_id = m.product_id
+    GROUP BY s.customer_id, m.product_name
+),
+ranked_items AS (
+    SELECT
+        customer_id,
+        product_name,
+        purchase_count,
+        DENSE_RANK() OVER (
+            PARTITION BY customer_id
+            ORDER BY purchase_count DESC
+        ) AS popularity_rank
+    FROM item_counts
+)
+SELECT
+    customer_id,
+    product_name,
+    purchase_count
+FROM ranked_items
+WHERE popularity_rank = 1
+ORDER BY customer_id, product_name;
+```
 
-**SQL:**
+**Steps:**
 
-<!-- Add your answer in solutions.sql and link to its section here if useful. -->
+- Joined `sales` and `menu` using `product_id` to get each product’s name.
+- Counted how many times each customer purchased each product.
+- Used `DENSE_RANK()` to rank each customer’s products by purchase count.
+- Kept rank 1 to return each customer’s most popular item, including ties.
+- Sorted the results by customer and product name.
 
-**Result:**
+**Answer:**
 
-<!-- Add a small result table or summary here. -->
+| **customer_id** | **product_name** | **purchase_count** |
+| --------------- | ---------------- | -----------------: |
+| A               | ramen            | 3                  |
+| B               | curry            | 2                  |
+| B               | ramen            | 2                  |
+| B               | sushi            | 2                  |
+| C               | ramen            | 3                  |
 
-**Interpretation:**
-
-<!-- Explain what the result means for the business. -->
-
+- Ramen was the most popular item for customers A and C.
+- Customer B purchased all three menu items equally often, so they are all tied as the most popular.
 ---
 
 ### 6. First item purchased after joining
