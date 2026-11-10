@@ -252,62 +252,51 @@ ORDER BY customer_id, product_name;
 
 ### 6. First item purchased after joining
 
-### 5. Most popular item for each customer
+### 6. First item purchased after becoming a member
 
-**Question:** Which item was the most popular for each customer?
+**Question:** Which item was purchased first by the customer after they became a member?
 
 ```sql
-WITH item_counts AS (
+WITH joined_as_member AS (
     SELECT
-        s.customer_id,
-        m.product_name,
-        COUNT(*) AS purchase_count
-    FROM dannys_diner.sales AS s
-    INNER JOIN dannys_diner.menu AS m
-        ON s.product_id = m.product_id
-    GROUP BY s.customer_id, m.product_name
-),
-ranked_items AS (
-    SELECT
-        customer_id,
-        product_name,
-        purchase_count,
-        DENSE_RANK() OVER (
-            PARTITION BY customer_id
-            ORDER BY purchase_count DESC
-        ) AS popularity_rank
-    FROM item_counts
+        members.customer_id,
+        sales.product_id,
+        ROW_NUMBER() OVER (
+            PARTITION BY members.customer_id
+            ORDER BY sales.order_date
+        ) AS row_num
+    FROM dannys_diner.members
+    INNER JOIN dannys_diner.sales
+        ON members.customer_id = sales.customer_id
+        AND sales.order_date > members.join_date
 )
 SELECT
     customer_id,
-    product_name,
-    purchase_count
-FROM ranked_items
-WHERE popularity_rank = 1
-ORDER BY customer_id, product_name;
+    product_name
+FROM joined_as_member
+INNER JOIN dannys_diner.menu
+    ON joined_as_member.product_id = menu.product_id
+WHERE row_num = 1
+ORDER BY customer_id ASC;
 ```
 
 **Steps:**
 
-- Joined `sales` and `menu` using `product_id` to get each product’s name.
-- Counted how many times each customer purchased each product.
-- Used `DENSE_RANK()` to rank each customer’s products by purchase count.
-- Kept rank 1 to return each customer’s most popular item, including ties.
-- Sorted the results by customer and product name.
+- Joined `members` and `sales` by `customer_id` to match each member with their purchases.
+- Kept purchases made after each customer’s `join_date`.
+- Used `ROW_NUMBER()` to number each customer’s purchases from earliest to latest.
+- Joined the results to `menu` to retrieve each product’s name.
+- Kept rows numbered `1` to show the first post-membership purchase.
 
 **Answer:**
 
-| **customer_id** | **product_name** | **purchase_count** |
-| --------------- | ---------------- | -----------------: |
-| A               | ramen            | 3                  |
-| B               | curry            | 2                  |
-| B               | ramen            | 2                  |
-| B               | sushi            | 2                  |
-| C               | ramen            | 3                  |
+| **customer_id** | **product_name** |
+| --------------- | ---------------- |
+| A               | ramen            |
+| B               | sushi            |
 
-- Ramen was the most popular item for customers A and C.
-- Customer B purchased all three menu items equally often, so they are all tied as the most popular.
-
+- Customer A’s first purchase after joining was ramen.
+- Customer B’s first purchase after joining was sushi.
 ---
 
 ### 7. Last item purchased before joining
