@@ -252,7 +252,6 @@ ORDER BY customer_id, product_name;
 
 ### 6. First item purchased after joining
 
-### 6. First item purchased after becoming a member
 
 **Question:** Which item was purchased first by the customer after they became a member?
 
@@ -301,21 +300,51 @@ ORDER BY customer_id ASC;
 
 ### 7. Last item purchased before joining
 
-**Approach:**
+**Question:** Which item was purchased just before the customer became a member?
 
-<!-- Explain your approach and any assumptions here. -->
+```sql
+WITH date_bef_join AS (
+    SELECT
+        sales.customer_id,
+        sales.product_id,
+        sales.order_date,
+        DENSE_RANK() OVER (
+            PARTITION BY sales.customer_id
+            ORDER BY sales.order_date DESC
+        ) AS date_rank
+    FROM dannys_diner.members
+    INNER JOIN dannys_diner.sales
+        ON members.customer_id = sales.customer_id
+        AND sales.order_date < members.join_date
+)
+SELECT DISTINCT
+    d.customer_id,
+    m.product_name
+FROM date_bef_join AS d
+INNER JOIN dannys_diner.menu AS m
+    ON d.product_id = m.product_id
+WHERE d.date_rank = 1
+ORDER BY d.customer_id, m.product_name;
+```
 
-**SQL:**
+**Steps:**
 
-<!-- Add your answer in solutions.sql and link to its section here if useful. -->
+- Joined `members` and `sales` using `customer_id`.
+- Kept purchases made before each customer's `join_date`.
+- Used `DENSE_RANK()` to rank each customer's pre-membership purchases from latest to earliest.
+- Joined to `menu` to get the product names.
+- Kept rank 1 and used `DISTINCT` to show each customer–product pair once.
 
-**Result:**
+**Answer:**
 
-<!-- Add a small result table or summary here. -->
+| **customer_id** | **product_name** |
+| --------------- | ---------------- |
+| A               | curry            |
+| A               | sushi            |
+| B               | sushi            |
 
-**Interpretation:**
-
-<!-- Explain what the result means for the business. -->
+- Customer A bought curry and sushi on the latest date before joining. The data has no time information to show which was purchased first.
+- Customer B’s item on the latest date before joining was sushi.
 
 ---
 
