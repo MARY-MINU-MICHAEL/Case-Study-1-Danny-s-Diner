@@ -159,7 +159,7 @@ ORDER BY customer_id, product_name;
 
 ### 4. Most purchased menu item
 
-*Question:* What is the most purchased item on the menu and how many times was it purchased by all customers?
+**Question:** What is the most purchased item on the menu and how many times was it purchased by all customers?
 
 ```sql
 WITH product_count AS (
