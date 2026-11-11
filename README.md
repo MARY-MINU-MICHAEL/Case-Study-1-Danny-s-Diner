@@ -350,22 +350,46 @@ ORDER BY d.customer_id, m.product_name;
 
 ### 8. Purchases before joining
 
-**Approach:**
+**Question:** What is the total number of items and amount spent for each member before they became a member?
 
-<!-- Explain your approach and any assumptions here. -->
+```sql
+WITH items_purchased_before_join AS (
+    SELECT
+        s.customer_id,
+        s.product_id
+    FROM dannys_diner.sales AS s
+    INNER JOIN dannys_diner.members AS mm
+        ON s.customer_id = mm.customer_id
+        AND s.order_date < mm.join_date
+)
+SELECT
+    i.customer_id,
+    COUNT(*) AS count_of_items,
+    SUM(m.price) AS total_spent
+FROM items_purchased_before_join AS i
+INNER JOIN dannys_diner.menu AS m
+    ON i.product_id = m.product_id
+GROUP BY i.customer_id
+ORDER BY i.customer_id;
+```
 
-**SQL:**
+**Steps:**
 
-<!-- Add your answer in solutions.sql and link to its section here if useful. -->
+- Joined `sales` and `members` using `customer_id`.
+- Kept purchases made before each member’s `join_date`.
+- Joined to `menu` using `product_id` to get the price of each item.
+- Counted the purchase rows and summed the prices for each customer.
+- Grouped the results by customer.
 
-**Result:**
+**Answer:**
 
-<!-- Add a small result table or summary here. -->
+| **customer_id** | **count_of_items** | **total_spent** |
+| --------------- | ----------------: | --------------: |
+| A               | 2                 | 25              |
+| B               | 3                 | 40              |
 
-**Interpretation:**
-
-<!-- Explain what the result means for the business. -->
-
+- Customer A purchased 2 items and spent $25 before joining.
+- Customer B purchased 3 items and spent $40 before joining.
 ---
 
 ### 9. Customer points
