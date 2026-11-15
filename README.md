@@ -394,22 +394,44 @@ ORDER BY i.customer_id;
 
 ### 9. Customer points
 
-**Approach:**
+**Question:** If each $1 spent earns 10 points and sushi has a 2x points multiplier, how many points would each customer have?
 
-<!-- Explain your approach and how you apply the points rules. -->
+```sql
+ALTER TABLE dannys_diner.menu
+ADD COLUMN points INT;
 
-**SQL:**
+UPDATE dannys_diner.menu
+SET points = CASE
+    WHEN product_name = 'sushi' THEN price * 20
+    ELSE price * 10
+END
+WHERE product_id > 0;
 
-<!-- Add your answer in solutions.sql and link to its section here if useful. -->
+SELECT
+    sales.customer_id,
+    SUM(menu.points) AS total_points
+FROM dannys_diner.sales
+INNER JOIN dannys_diner.menu
+    ON sales.product_id = menu.product_id
+GROUP BY sales.customer_id
+ORDER BY sales.customer_id;
+```
 
-**Result:**
+**Steps:**
 
-<!-- Add a small result table or summary here. -->
+- Added a numeric `points` column to the `menu` table.
+- Used `CASE` to calculate 20 points per dollar for sushi and 10 points per dollar for other items.
+- Updated the menu items with their points values.
+- Joined `sales` and `menu` using `product_id`.
+- Summed the points for each customer.
 
-**Interpretation:**
+**Answer:**
 
-<!-- Explain what the result means for the business. -->
-
+| **customer_id** | **total_points** |
+| --------------- | ---------------: |
+| A               | 860              |
+| B               | 940              |
+| C               | 360              |
 ---
 
 ### 10. Points earned by the end of January
