@@ -397,33 +397,33 @@ ORDER BY i.customer_id;
 **Question:** If each $1 spent earns 10 points and sushi has a 2x points multiplier, how many points would each customer have?
 
 ```sql
-ALTER TABLE dannys_diner.menu
-ADD COLUMN points INT;
+WITH points_cte AS (
+  SELECT 
+    menu.product_id, 
+    CASE
+      WHEN product_id = 1 THEN price * 20
+      ELSE price * 10 END AS points
+  FROM dannys_diner.menu
+)
 
-UPDATE dannys_diner.menu
-SET points = CASE
-    WHEN product_name = 'sushi' THEN price * 20
-    ELSE price * 10
-END
-WHERE product_id > 0;
-
-SELECT
-    sales.customer_id,
-    SUM(menu.points) AS total_points
+SELECT 
+  sales.customer_id, 
+  SUM(points_cte.points) AS total_points
 FROM dannys_diner.sales
-INNER JOIN dannys_diner.menu
-    ON sales.product_id = menu.product_id
+INNER JOIN points_cte
+  ON sales.product_id = points_cte.product_id
 GROUP BY sales.customer_id
 ORDER BY sales.customer_id;
 ```
 
 **Steps:**
+Let's break down the question to understand the point calculation for each customer's purchases.
 
-- Added a numeric `points` column to the `menu` table.
-- Used `CASE` to calculate 20 points per dollar for sushi and 10 points per dollar for other items.
-- Updated the menu items with their points values.
-- Joined `sales` and `menu` using `product_id`.
-- Summed the points for each customer.
+- Each $1 spent = 10 points. However, product_id 1 sushi gets 2x points, so each $1 spent = 20 points.
+- Here's how the calculation is performed using a conditional CASE statement:
+  - If product_id = 1, multiply every $1 by 20 points.
+  - Otherwise, multiply $1 by 10 points.
+- Then, calculate the total points for each customer.
 
 **Answer:**
 
