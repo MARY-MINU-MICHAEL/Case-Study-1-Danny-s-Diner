@@ -494,7 +494,27 @@ ORDER BY s.customer_id;
 
 ## Bonus Questions
 
-### Join All The Things
+```sql
+USE dannys_diner;
+SELECT * FROM MENU;
+SELECT * FROM Members;
+SELECT * FROM Sales;
+
+SELECT 
+	s.customer_id,s.order_date,m.product_name,m.price,
+    (CASE 
+		WHEN s.order_date >= mm.join_date 
+			THEN "Y"
+		ELSE "N"
+	END)
+    AS member    
+FROM dannys_diner.sales AS s
+INNER JOIN dannys_diner.menu as m
+ON s.product_id = m.product_id
+INNER JOIN dannys_diner.members as mm
+ON s.customer_id=mm.customer_id
+ORDER BY customer_id,price;
+```
 
 **Approach:**
 
