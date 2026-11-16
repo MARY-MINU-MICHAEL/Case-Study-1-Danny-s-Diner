@@ -440,7 +440,7 @@ Let's break down the question to understand the point calculation for each custo
 
 ### 10. Points earned by the end of January
 
-**Question:**In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+**Question:** In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 
 ```sql
 WITH dates_cte AS (
@@ -479,7 +479,7 @@ ORDER BY s.customer_id;
 - Filtered out the order dates which are not inside  the interval of valid date and last date.
 - Performed case operation to calculate the points for each customer.
 
-  **Answer:**
+**Answer:**
 
 | **customer_id** | **total_points** |
 | --------------- | ---------------: |
