@@ -432,25 +432,65 @@ Let's break down the question to understand the point calculation for each custo
 | A               | 860              |
 | B               | 940              |
 | C               | 360              |
+
+- Customer A has total points of 860.
+- Customer B has total points of 940.
+- Customer C has total points of 360.
 ---
 
 ### 10. Points earned by the end of January
 
-**Approach:**
+**Question:**In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 
-<!-- Explain the date window and points rules you applied. -->
+```sql
+WITH dates_cte AS (
+    SELECT
+        customer_id,
+        join_date,
+        DATE_ADD(join_date, INTERVAL 6 DAY) AS valid_date,
+        LAST_DAY('2021-01-31') AS last_date
+    FROM dannys_diner.members
+)
+SELECT
+    s.customer_id,
+    SUM(
+        CASE
+            WHEN m.product_name = 'sushi'
+                THEN 20 * m.price
+            WHEN s.order_date BETWEEN d.join_date AND d.valid_date
+                THEN 20 * m.price
+            ELSE 10 * m.price
+        END
+    ) AS points
+FROM dannys_diner.sales AS s
+INNER JOIN dates_cte AS d
+    ON s.customer_id = d.customer_id
+    AND s.order_date >= d.join_date
+    AND s.order_date <= d.last_date
+INNER JOIN dannys_diner.menu AS m
+    ON s.product_id = m.product_id
+GROUP BY s.customer_id
+ORDER BY s.customer_id;
 
-**SQL:**
+```
+**Steps:**
+- Created a CTE table containing customer id, valid date and last date according to the requirement in the problem
+- Used two inner joins to join CTE table, sales table and menu table
+- Filtered out the order dates which are not inside  the interval of valid date and last date.
+- Performed case operation to calculate the points for each customer.
 
-<!-- Add your answer in solutions.sql and link to its section here if useful. -->
+  **Answer:**
 
-**Result:**
+| **customer_id** | **total_points** |
+| --------------- | ---------------: |
+| A               | 1020             |
+| B               | 320              |
 
-<!-- Add a small result table or summary here. -->
+- Customer A has total points of 1020.
+- Customer B has total points of 320.
+- Customer C has no points.
 
-**Interpretation:**
-
-<!-- Explain what the result means for the business. -->
+---
 
 ## Bonus Questions
 
