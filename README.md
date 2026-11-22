@@ -492,62 +492,55 @@ ORDER BY s.customer_id;
 
 ---
 
-## Bonus Questions
+### Bonus Question: Join All The Things
+
+**Question:** Recreate a table showing each customer’s order date, product name, price, and membership status at the time of the order.
 
 ```sql
-USE dannys_diner;
-SELECT * FROM MENU;
-SELECT * FROM Members;
-SELECT * FROM Sales;
-
-SELECT 
-	s.customer_id,s.order_date,m.product_name,m.price,
-    (CASE 
-		WHEN s.order_date >= mm.join_date 
-			THEN "Y"
-		ELSE "N"
-	END)
-    AS member    
-FROM dannys_diner.sales AS s
-INNER JOIN dannys_diner.menu as m
-ON s.product_id = m.product_id
-INNER JOIN dannys_diner.members as mm
-ON s.customer_id=mm.customer_id
-ORDER BY customer_id,price;
+SELECT
+    sales.customer_id,
+    sales.order_date,
+    menu.product_name,
+    menu.price,
+    CASE
+        WHEN members.join_date > sales.order_date THEN 'N'
+        WHEN members.join_date <= sales.order_date THEN 'Y'
+        ELSE 'N'
+    END AS member_status
+FROM dannys_diner.sales
+LEFT JOIN dannys_diner.members
+    ON sales.customer_id = members.customer_id
+INNER JOIN dannys_diner.menu
+    ON sales.product_id = menu.product_id
+ORDER BY sales.customer_id, sales.order_date, menu.product_name;
 ```
 
-**Approach:**
+**Steps:**
 
-<!-- Explain your approach here. -->
+- Joined `sales` to `members` with a `LEFT JOIN` so customers without memberships are retained.
+- Joined `sales` to `menu` using `product_id` to get each product’s name and price.
+- Used `CASE` to mark an order as `Y` if it was on or after the customer’s join date; otherwise, marked it `N`.
+- Sorted the results by customer, order date, and product name.
 
-**SQL:**
+**Answer:**
 
-<!-- Add your answer in solutions.sql. -->
-
-**Result:**
-
-<!-- Add the output table here. -->
-
-### Rank All The Things
-
-**Approach:**
-
-<!-- Explain how you assign ranks and handle non-member purchases. -->
-
-**SQL:**
-
-<!-- Add your answer in solutions.sql. -->
-
-**Result:**
-
-<!-- Add the output table here. -->
-
-## Key Findings
-
-1. <!-- Add a business finding. -->
-2. <!-- Add a business finding. -->
-3. <!-- Add a business finding. -->
-
+| **customer_id** | **order_date** | **product_name** | **price** | **member_status** |
+| --------------- | -------------- | ---------------- | --------: | ----------------- |
+| A               | 2021-01-01     | curry            | 15        | N                 |
+| A               | 2021-01-01     | sushi            | 10        | N                 |
+| A               | 2021-01-07     | curry            | 15        | Y                 |
+| A               | 2021-01-10     | ramen            | 12        | Y                 |
+| A               | 2021-01-11     | ramen            | 12        | Y                 |
+| A               | 2021-01-11     | ramen            | 12        | Y                 |
+| B               | 2021-01-01     | curry            | 15        | N                 |
+| B               | 2021-01-02     | curry            | 15        | N                 |
+| B               | 2021-01-04     | sushi            | 10        | N                 |
+| B               | 2021-01-11     | sushi            | 10        | Y                 |
+| B               | 2021-01-16     | ramen            | 12        | Y                 |
+| B               | 2021-02-01     | ramen            | 12        | Y                 |
+| C               | 2021-01-01     | ramen            | 12        | N                 |
+| C               | 2021-01-01     | ramen            | 12        | N                 |
+| C               | 2021-01-07     | ramen            | 12        | N                 |
 ## What I Learned
 
 - **SQL concepts practiced:** <!-- Add the SQL concepts you used. -->
