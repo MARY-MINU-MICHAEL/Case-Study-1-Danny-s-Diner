@@ -497,22 +497,21 @@ ORDER BY s.customer_id;
 **Question:** Recreate a table showing each customer’s order date, product name, price, and membership status at the time of the order.
 
 ```sql
-SELECT
-    sales.customer_id,
-    sales.order_date,
-    menu.product_name,
-    menu.price,
-    CASE
-        WHEN members.join_date > sales.order_date THEN 'N'
-        WHEN members.join_date <= sales.order_date THEN 'Y'
-        ELSE 'N'
-    END AS member_status
-FROM dannys_diner.sales
-LEFT JOIN dannys_diner.members
-    ON sales.customer_id = members.customer_id
-INNER JOIN dannys_diner.menu
-    ON sales.product_id = menu.product_id
-ORDER BY sales.customer_id, sales.order_date, menu.product_name;
+SELECT 
+  s.customer_id, 
+  s.order_date,  
+  m.product_name, 
+  m.price,
+  CASE
+    WHEN mm.join_date > s.order_date THEN 'N'
+    WHEN mm.join_date <= s.order_date THEN 'Y'
+    ELSE 'N' END AS member_status
+FROM dannys_diner.sales AS s
+LEFT JOIN dannys_diner.members AS mm
+  ON s.customer_id = mm.customer_id
+INNER JOIN dannys_diner.menu AS m
+  ON s.product_id = m.product_id
+ORDER BY mm.customer_id, s.order_date;
 ```
 
 **Steps:**
